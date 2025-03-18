@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Login Agente";
+}
+@model Cops.Controllers.VerbaleController;
+
+
+<h1>Login Agente di Polizia</h1>
+
+<form method="post" asp-action="Index">
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name="username" required />
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Accedi</button>
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger mt-2">
+        @ViewBag.Error
+    </div>
+}

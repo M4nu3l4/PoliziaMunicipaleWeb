@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Cops.Models.Verbale>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <!-- Card 1: Contattaci -->
+        <div class="col-md-4">
+            <div class="card">
+                <img src="~/images/Contattaci.png" alt="Logo" class="card-img-top" alt="Contattaci">
+                <div class="card-body">
+                    <h5 class="card-title">Contattaci</h5>
+                    <p class="card-text">Per maggiori informazioni, clicca qui.</p>
+                    <a href="@Url.Action("Index", "Contattaci")" class="btn btn-primary">Vai alla pagina</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Poliziotto -->
+        <div class="col-md-4">
+            <div class="card">
+                <img src="~/images/polizia.png" alt="Logo" class="card-img-top" alt="Agente">
+                <div class="card-body">
+                    <h5 class="card-title">Agente di Polizia</h5>
+                    <p class="card-text">Accedi come addetto ai servizi per vedere le violazioni.</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Accedi</button> <!-- Pulsante "Accedi" -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal per il login -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Login Agente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" asp-action="Login" asp-controller="AgenteDiPolizia">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Accedi</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Card 3: Cittadino -->
+        <div class="col-md-4">
+            <div class="card">
+                <img src="~/images/cittadini.png" alt="Logo" class="card-img-top" alt="Cittadino">
+                <div class="card-body">
+                    <h5 class="card-title">Cittadino</h5>
+                    <p class="card-text">Visualizza le tue sanzioni.</p>
+                    <a href="@Url.Action("Index", "Anagrafica")" class="btn btn-primary">Visualizza</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

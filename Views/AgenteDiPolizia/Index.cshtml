@@ -1,0 +1,71 @@
+﻿
+
+@{
+    ViewData["Title"] = "agenteIndex";
+}
+
+@model IEnumerable<Cops.Models.Verbale>
+
+
+
+
+<h2>Gestione Verbali</h2>
+
+<form method="get">
+    <div class="mb-3">
+        <input type="number" name="ID Verbale" class="form-control" placeholder="ID Verbale" />
+        <input type="text" name="Anagrafica" class="form-control" placeholder="Anagrafica" />
+        <input type="number" name="Violazione" class="form-control" placeholder="Violazione" />
+        <input type="number" name="DataViolazione" class="form-control" placeholder="DataViolazione" />
+        <input type="text" name="Nominativo_Agente" class="form-control" placeholder="Nominativo_Agente" />
+        <input type="number" name="DataTrascrizioneVerbale" class="form-control" placeholder="DataTrascrizioneVerbale" />
+        <input type="number" name="Importo" class="form-control" placeholder="Importo" />
+        <input type="number" name="DecurtamentoPunti" class="form-control" placeholder="DecurtamentoPunti" />
+        <input type="text" name="codiceFiscale" class="form-control" placeholder="Codice Fiscale" />
+        <button type="submit" class="btn btn-primary mt-2">Cerca</button>
+    </div>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID Verbale</th>
+                <th>Anagrafica</th>
+                <th>Violazione</th>
+                <th>DataViolazione</th>
+                <th>Nominativo_Agente</th>
+                <th>DataTrascrizioneVerbale</th>
+                <th>Importo</th>
+                <th>DecurtamentoPunti</th>
+                <th>Cod_Fisc</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var verbale in Model)
+            {
+                <tr>
+                    <td>@verbale.IdVerbale</td>
+                    <td>@verbale.IdAnagrafica</td>
+                    <td>@verbale.IdViolazione</td>
+                    <td>@verbale.DataViolazione</td>
+                    <td>@verbale.Nominativo_Agente</td>
+                    <td>@verbale.DataTrascrizioneVerbale</td>
+                    <td>@verbale.Importo</td>
+                    <td>@verbale.DecurtamentoPunti</td>
+                    <td>@verbale.Cod_Fisc</td>
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = verbale.IdVerbale })" class="btn btn-warning">Modifica</a>
+                        <a href="@Url.Action("Delete", new { id = verbale.IdVerbale })" class="btn btn-danger">Elimina</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Nessun verbale trovato.</p>
+}
+

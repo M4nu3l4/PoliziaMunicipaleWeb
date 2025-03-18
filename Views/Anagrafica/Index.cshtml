@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Cops.Models.Verbale>
+@using Cops.Models
+
+
+@{
+    ViewData["Title"] = "Visualizza Verbali - Anagrafica";
+}
+
+<div class="container mt-3">
+    <h2>Visualizza Verbali - Anagrafica</h2>
+    <form method="get" class="form-inline mb-3">
+        <div class="form-group">
+            <label for="codiceFiscale">Codice Fiscale:</label>
+            <input type="text" name="codiceFiscale" id="codiceFiscale" class="form-control" placeholder="Inserisci Codice Fiscale" />
+        </div>
+        <div class="form-group ml-3">
+            <label for="idVerbale">ID Verbale:</label>
+            <input type="number" name="idVerbale" id="idVerbale" class="form-control" placeholder="Inserisci ID Verbale" />
+        </div>
+        <button type="submit" class="btn btn-primary ml-3">Cerca</button>
+    </form>
+
+    @if (Model.Any())
+    {
+        <div class="list-group">
+            @foreach (var verbale in Model)
+            {
+                <div class="list-group-item">
+                    <h5 class="mb-1">Verbale ID: @verbale.IdVerbale</h5>
+                    <p><strong>Tipo Violazione:</strong> @verbale.TipoViolazione.Descrizione</p>
+                    <p><strong>Data Violazione:</strong> @verbale.DataViolazione.ToString("dd/MM/yyyy")</p>
+                    <p><strong>Importo:</strong> @verbale.Importo € | <strong>Punti Decurtati:</strong> @verbale.DecurtamentoPunti</p>
+                    <a href="@Url.Action("VisualizzaVerbale", "Servizi", new { id = verbale.IdVerbale })" class="btn btn-success">Visualizza Verbale</a>
+                    <button class="btn btn-warning ml-2">Paga</button>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>Nessun verbale trovato per i criteri specificati.</p>
+    }
+</div>

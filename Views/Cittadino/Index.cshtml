@@ -1,0 +1,46 @@
+﻿
+
+@if (Model != null && Model.Any())
+@model IEnumerable<Cops.Models.Verbale>
+
+@{
+    ViewData["Title"] = "Visualizza Verbali - Cittadino";
+}
+
+<div class="container mt-4">
+    <h2>Visualizza i tuoi Verbali</h2>
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID Verbale</th>
+                    <th scope="col">Data Violazione</th>
+                    <th scope="col">Descrizione</th>
+                    <th scope="col">Importo</th>
+                    <th scope="col">Decurtamento Punti</th>
+                    <th scope="col">Azione</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var verbale in Model)
+                {
+                    <tr>
+                        <td>@verbale.IdVerbale</td>
+                        <td>@verbale.DataViolazione.ToString("dd/MM/yyyy")</td>
+                        <td>@verbale.TipoViolazione</td>
+                        <td>@verbale.Importo.GetValueOrDefault().ToString("C")</td>
+                        <td>@verbale.DecurtamentoPunti</td>
+                        <td>
+                            <a class="btn btn-success" href="#">Paga</a> 
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Non sono stati trovati verbali per il codice fiscale specificato.</p>
+    }
+</div>

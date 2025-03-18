@@ -1,0 +1,23 @@
+﻿@model Cops.Models.Anagrafica;
+
+
+@{
+    ViewData["Title"] = "Dettagli Agente di Polizia";
+}
+
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>@Model.Nome @Model.Cognome</h4>
+    <p><strong>Codice Fiscale:</strong> @Model.Cod_Fisc</p>
+    <h5>Verbali Associati:</h5>
+    <ul>
+        @foreach (var verbale in Model.Verbali)
+        {
+            <li>@verbale.IdVerbale - @verbale.DataViolazione.ToString("dd/MM/yyyy")</li>
+        }
+    </ul>
+</div>
+
+<a href="@Url.Action("Index", "AgenteDiPolizia")">Back to List</a>
