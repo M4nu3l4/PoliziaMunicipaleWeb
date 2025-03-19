@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Cops.Models.Anagrafica>
+
+@{
+    ViewData["Title"] = "Elenco Trasgressori";
+}
+
+<h2>Elenco Trasgressori</h2>
+
+@if (!string.IsNullOrEmpty(ViewData["Message"] as string))
+{
+    <p>@ViewData["Message"]</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Codice Fiscale</th>
+                <th>Indirizzo</th>
+                <th>Città</th>
+                <th>Punti Decurtati</th>
+                <th>Punti Rimanenti</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var trasgressore in Model)
+            {
+                <tr>
+                    <td>@trasgressore.Nome</td>
+                    <td>@trasgressore.Cognome</td>
+                    <td>@trasgressore.Cod_Fisc</td>
+                    <td>@trasgressore.Indirizzo</td>
+                    <td>@trasgressore.Citta</td>
+                    <td>@trasgressore.PuntiDecurtati</td>
+                    <td>@trasgressore.PuntiRimanenti</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

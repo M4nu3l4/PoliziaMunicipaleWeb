@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Cops.Models;
 
+
 namespace Cops.Data
 {
     public class CopsContext : DbContext

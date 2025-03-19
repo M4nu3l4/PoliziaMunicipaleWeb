@@ -34,23 +34,30 @@ namespace Cops
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
-    name: "agenteLogin",
-    pattern: "AgenteDiPolizia/Login",
-    defaults: new { controller = "AgenteDiPolizia", action = "Login" });
+                name: "agenteLogin",
+                pattern: "AgenteDiPolizia/Login",
+                defaults: new { controller = "AgenteDiPolizia", action = "Login" });
 
-            // Rotta per l'Index dell'agente
+            
             app.MapControllerRoute(
                 name: "agenteIndex",
                 pattern: "AgenteDiPolizia/Index/{id?}",
                 defaults: new { controller = "AgenteDiPolizia", action = "Index" });
 
-
-
-            //  il cittadino
             app.MapControllerRoute(
-            name: "cittadino",
-            pattern: "Cittadino/Index/{codiceFiscale?}",
-            defaults: new { controller = "Cittadino", action = "Index" });
+                name: "trasgressori",
+                pattern: "AgenteDiPolizia/VisualizzaTrasgressori/{id?}",
+                defaults: new { controller = "Home", action = "VisualizzaTrasgressori" });
+
+            app.MapControllerRoute(
+    name: "Contattaci",
+    pattern: "{controller=Home}/{action=Contattaci}/{id?}");
+    
+
+            app.MapControllerRoute(
+                name: "cittadino",
+                pattern: "Cittadino/Index/{codiceFiscale?}",
+                defaults: new { controller = "Cittadino", action = "Index" });
 
             app.UseExceptionHandler("/Home/Error");
             app.Run();

@@ -1,45 +1,37 @@
-﻿
+﻿@model IEnumerable<Cops.Models.Verbale>
 
 @{
-    ViewData["Title"] = "agenteIndex";
+    ViewData["Title"] = "Lista Verbali";
 }
 
-@model IEnumerable<Cops.Models.Verbale>
+<h2 class="text-primary">Verbali Registrati</h2>
 
 
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-warning">@ViewData["Message"]</div>
+}
 
 
-<h2>Gestione Verbali</h2>
-
-<form method="get">
-    <div class="mb-3">
-        <input type="number" name="ID Verbale" class="form-control" placeholder="ID Verbale" />
-        <input type="text" name="Anagrafica" class="form-control" placeholder="Anagrafica" />
-        <input type="number" name="Violazione" class="form-control" placeholder="Violazione" />
-        <input type="number" name="DataViolazione" class="form-control" placeholder="DataViolazione" />
-        <input type="text" name="Nominativo_Agente" class="form-control" placeholder="Nominativo_Agente" />
-        <input type="number" name="DataTrascrizioneVerbale" class="form-control" placeholder="DataTrascrizioneVerbale" />
-        <input type="number" name="Importo" class="form-control" placeholder="Importo" />
-        <input type="number" name="DecurtamentoPunti" class="form-control" placeholder="DecurtamentoPunti" />
-        <input type="text" name="codiceFiscale" class="form-control" placeholder="Codice Fiscale" />
-        <button type="submit" class="btn btn-primary mt-2">Cerca</button>
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="Cod_Fisc" class="form-control" placeholder="Inserisci Codice Fiscale" />
+        <button type="submit" class="btn btn-primary">Cerca</button>
     </div>
 </form>
 
+
 @if (Model != null && Model.Any())
 {
-    <table class="table">
-        <thead>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
             <tr>
                 <th>ID Verbale</th>
-                <th>Anagrafica</th>
+                <th>Codice Fiscale</th>
                 <th>Violazione</th>
-                <th>DataViolazione</th>
-                <th>Nominativo_Agente</th>
-                <th>DataTrascrizioneVerbale</th>
                 <th>Importo</th>
-                <th>DecurtamentoPunti</th>
-                <th>Cod_Fisc</th>
+                <th>Punti Decurtati</th>
+                <th>Azioni</th>
             </tr>
         </thead>
         <tbody>
@@ -47,14 +39,10 @@
             {
                 <tr>
                     <td>@verbale.IdVerbale</td>
-                    <td>@verbale.IdAnagrafica</td>
-                    <td>@verbale.IdViolazione</td>
-                    <td>@verbale.DataViolazione</td>
-                    <td>@verbale.Nominativo_Agente</td>
-                    <td>@verbale.DataTrascrizioneVerbale</td>
-                    <td>@verbale.Importo</td>
+                    <td>@verbale.Anagrafica?.Cod_Fisc</td>
+                    <td>@verbale.TipoViolazione?.Descrizione</td>
+                    <td>@verbale.Importo €</td>
                     <td>@verbale.DecurtamentoPunti</td>
-                    <td>@verbale.Cod_Fisc</td>
                     <td>
                         <a href="@Url.Action("Edit", new { id = verbale.IdVerbale })" class="btn btn-warning">Modifica</a>
                         <a href="@Url.Action("Delete", new { id = verbale.IdVerbale })" class="btn btn-danger">Elimina</a>
@@ -66,6 +54,5 @@
 }
 else
 {
-    <p>Nessun verbale trovato.</p>
+    <p class="text-danger">Nessun verbale trovato.</p>
 }
-

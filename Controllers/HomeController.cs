@@ -13,13 +13,13 @@ namespace Cops.Controllers
             return View();  
         }
 
-        // Aggiungi la proprietà per il contesto
+        
         private readonly CopsContext _context;
 
-        // Costruttore che inietta il contesto
+        
         public HomeController(CopsContext context)
         {
-            _context = context; // Assegna il contesto al campo privato
+            _context = context; 
         }
 
         // GET: Home/Details/5

@@ -1,43 +1,40 @@
-﻿@model Cops.Models.AgenteDiPolizia
+﻿@model Cops.Models.Verbale
 
-@{
-    ViewData["Title"] = "Edit";
-}
+<h2>Modifica Verbale</h2>
 
-<h1>Edit</h1>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="IdVerbale" />
 
-<h4>AgenteDiPolizia</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cognome" class="control-label"></label>
-                <input asp-for="Cognome" class="form-control" />
-                <span asp-validation-for="Cognome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cod_Fisc" class="control-label"></label>
-                <input asp-for="Cod_Fisc" class="form-control" />
-                <span asp-validation-for="Cod_Fisc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="mb-3">
+        <label class="form-label">Codice Fiscale</label>
+        <input type="text" class="form-control" asp-for="Cod_Fisc" required />
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="mb-3">
+        <label class="form-label">Tipo Violazione</label>
+        <input type="number" class="form-control" asp-for="IdViolazione" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Decurtamento Punti</label>
+        <input type="number" class="form-control" asp-for="DecurtamentoPunti" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Importo (€)</label>
+        <input type="number" class="form-control" asp-for="Importo" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Data Violazione</label>
+        <input type="date" class="form-control" asp-for="DataViolazione" required />
+    </div>
+
+    <button type="submit" class="btn btn-warning">Salva Modifiche</button>
+</form>
+
+<a asp-action="Index">Torna alla lista</a>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

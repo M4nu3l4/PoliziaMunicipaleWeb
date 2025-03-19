@@ -1,6 +1,5 @@
 ﻿using Cops.Data;
 using Cops.Models;
-using Cops.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,37 +34,68 @@ namespace Cops.Controllers
 
         public async Task<IActionResult> Index(string Cod_Fisc)
         {
-            List<Verbale> verbale;
-
             if (string.IsNullOrEmpty(Cod_Fisc))
             {
-                verbale = await _context.Verbale
+                // Se non viene inserito alcun codice fiscale, mostra tutti i verbali
+                var tuttiVerbali = await _context.Verbale
                     .Include(v => v.Anagrafica)
                     .Include(v => v.TipoViolazione)
                     .ToListAsync();
-            }
-            else
-            {
-                verbale = await _context.Verbale
-                    .Include(v => v.Anagrafica)
-                    .Include(v => v.TipoViolazione)
-                    .Where(v => v.Anagrafica.Cod_Fisc == Cod_Fisc) 
-                    .ToListAsync();
+
+                ViewData["Message"] = "Tutti i verbali caricati.";
+                return View(tuttiVerbali);
             }
 
-          
-            if (verbale == null || !verbale.Any())
+            Console.WriteLine("Ricerca per Codice Fiscale: " + Cod_Fisc);
+
+            var trasgressore = await _context.Anagrafica.FirstOrDefaultAsync(a => a.Cod_Fisc == Cod_Fisc);
+
+            if (trasgressore == null)
             {
-                ViewData["Message"] = "Nessun verbale trovato per il codice fiscale inserito.";
+                Console.WriteLine($"Codice Fiscale {Cod_Fisc} non trovato nel DB.");
+                ViewData["Message"] = $"Nessun trasgressore trovato per il codice fiscale: {Cod_Fisc}";
                 return View(new List<Verbale>());
+            }
+
+            var verbali = await _context.Verbale
+                .Include(v => v.Anagrafica)
+                .Include(v => v.TipoViolazione)
+                .Where(v => v.IdAnagrafica == trasgressore.IdAnagrafica)
+                .ToListAsync();
+
+            if (!verbali.Any())
+            {
+                ViewData["Message"] = $"Nessun verbale trovato per il codice fiscale: {Cod_Fisc}";
+                return View(new List<Verbale>());
+            }
+
+            return View(verbali);
+        }
+
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var verbale = await _context.Verbale.FindAsync(id);
+            if (verbale == null)
+            {
+                return NotFound();
             }
 
             return View(verbale);
         }
 
-
         [HttpPost]
-        public IActionResult Edit(int id, Verbale verbale)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("IdVerbale,Cod_Fisc,IdViolazione,DecurtamentoPunti,Importo,DataViolazione")] Verbale verbale)
         {
             if (id != verbale.IdVerbale)
             {
@@ -75,8 +105,42 @@ namespace Cops.Controllers
             if (ModelState.IsValid)
             {
                 _context.Update(verbale);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            return View(verbale);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Cod_Fisc,IdViolazione,DecurtamentoPunti,Importo,DataViolazione")] Verbale verbale)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(verbale);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(verbale);
+        }
+
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var verbale = await _context.Verbale.FindAsync(id);
+            if (verbale == null)
+            {
+                return NotFound();
             }
 
             return View(verbale);
@@ -84,40 +148,36 @@ namespace Cops.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var verbale = _context.Verbale.Find(id);
+            var verbale = await _context.Verbale.FindAsync(id);
             if (verbale != null)
             {
                 _context.Verbale.Remove(verbale);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index", "AgenteDiPolizia");
+            return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> VisualizzaViolazione(string codFisc)
+
+
+
+
+        public async Task<IActionResult> VisualizzaTrasgressori()
         {
-            var trasgressore = await _context.Anagrafica.FirstOrDefaultAsync(a => a.Cod_Fisc == codFisc);
-            if (trasgressore == null)
+            // Recupera tutti i trasgressori dal database
+            var trasgressori = await _context.Anagrafica.ToListAsync();
+
+            if (!trasgressori.Any())
             {
-                return NotFound();
+                ViewData["Message"] = "Nessun trasgressore trovato nel sistema.";
+                return View(new List<Anagrafica>());
             }
 
-            var verbali = await _context.Verbale
-                                        .Include(v => v.Anagrafica)
-                                        .Include(v => v.TipoViolazione)
-                                        .Where(v => v.IdAnagrafica == trasgressore.IdAnagrafica)
-                                        .ToListAsync();
-
-            foreach (var verbale in verbali)
-            {
-                verbale.DecurtamentoPunti = verbale.DecurtamentoPunti ?? 0;
-                verbale.Importo = verbale.Importo ?? 0.00m;
-            }
-
-            return View(verbali);
+            return View(trasgressori);
         }
+
 
         public async Task<IActionResult> Details(int? id)
         {

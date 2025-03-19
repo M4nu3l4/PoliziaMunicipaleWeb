@@ -11,29 +11,25 @@ public class AnagraficaController : Controller
     {
         _context = context;
     }
-    public async Task<IActionResult> Index(string codiceFiscale)
+    public async Task<IActionResult> Index(string Cod_Fisc)
     {
-        // Verifica se è stato passato un codice fiscale, se no ritorna una lista vuota
-        if (string.IsNullOrEmpty(codiceFiscale))
+        
+        if (string.IsNullOrEmpty(Cod_Fisc))
         {
             return View(new List<Verbale>());
         }
 
-        // Ottieni i verbali relativi al codice fiscale
+       
         var verbali = await _context.Verbale
-            .Include(v => v.Anagrafica) // Include la relazione con l'anagrafica
-            .Include(v => v.TipoViolazione) // Include la relazione con il tipo di violazione
-            .Where(v => v.Anagrafica.Cod_Fisc == codiceFiscale) // Filtra per codice fiscale
+            .Include(v => v.Anagrafica) 
+            .Include(v => v.TipoViolazione) 
+            .Where(v => v.Anagrafica.Cod_Fisc == Cod_Fisc) 
             .ToListAsync();
 
-        // Passa la lista dei verbali alla vista
         return View(verbali);
     }
 
 
-
-
-    // Azione Details per visualizzare il dettaglio di un singolo elemento
     public async Task<IActionResult> Details(int id)
     {
         var anagrafica = await _context.Anagrafica.FindAsync(id);
@@ -46,16 +42,16 @@ public class AnagraficaController : Controller
     }
 
     // GET: Cittadino
-    public async Task<IActionResult> Cittadino(string codFisc, int? idVerbale)
+    public async Task<IActionResult> Cittadino(string Cod_Fisc, int? idVerbale)
     {
         var verbali = await _context.Verbale
-            .Include(v => v.Anagrafica) // Include l'anagrafica
+            .Include(v => v.Anagrafica) 
             .Include(v => v.TipoViolazione)
-            .Where(v => string.IsNullOrEmpty(codFisc) || v.Anagrafica.Cod_Fisc == codFisc) // Accesso a codFisc tramite Anagrafica
+            .Where(v => string.IsNullOrEmpty(Cod_Fisc) || v.Anagrafica.Cod_Fisc == Cod_Fisc)  
             .Where(v => !idVerbale.HasValue || v.IdVerbale == idVerbale)
             .ToListAsync();
 
         return View(verbali);
     }
 
-}
+}//in anagrafica devo popolare i records cod_fisc

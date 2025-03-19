@@ -1,5 +1,4 @@
 ﻿
-using Cops.Models;
 
 
 namespace Cops.Models.ViewModels

@@ -1,71 +1,40 @@
 ﻿@model Cops.Models.Verbale
 
-@{
-    ViewData["Title"] = "Create";
-}
+<h2>Crea un nuovo Verbale</h2>
 
-<h1>Create</h1>
-
-<h4>Verbale</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdAnagrafica" class="control-label"></label>
-                <select asp-for="IdAnagrafica" class ="form-control" asp-items="ViewBag.IdAnagrafica"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdViolazione" class="control-label"></label>
-                <select asp-for="IdViolazione" class ="form-control" asp-items="ViewBag.IdViolazione"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Anagrafica" class="control-label"></label>
-                <input asp-for="Anagrafica" class="form-control" />
-                <span asp-validation-for="Anagrafica" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataViolazione" class="control-label"></label>
-                <input asp-for="DataViolazione" class="form-control" />
-                <span asp-validation-for="DataViolazione" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IndirizzoViolazione" class="control-label"></label>
-                <input asp-for="IndirizzoViolazione" class="form-control" />
-                <span asp-validation-for="IndirizzoViolazione" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="Nominativo_Agente" class="control-label"></label>
-                <input asp-for="Nominativo_Agente" class="form-control" />
-                <span asp-validation-for="Nominativo_Agente" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataTrascrizioneVerbale" class="control-label"></label>
-                <input asp-for="DataTrascrizioneVerbale" class="form-control" />
-                <span asp-validation-for="DataTrascrizioneVerbale" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Importo" class="control-label"></label>
-                <input asp-for="Importo" class="form-control" />
-                <span asp-validation-for="Importo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DecurtamentoPunti" class="control-label"></label>
-                <input asp-for="DecurtamentoPunti" class="form-control" />
-                <span asp-validation-for="DecurtamentoPunti" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Codice Fiscale</label>
+        <input type="text" class="form-control" asp-for="Cod_Fisc" required />
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="mb-3">
+        <label class="form-label">Tipo Violazione</label>
+        <input type="number" class="form-control" asp-for="IdViolazione" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Decurtamento Punti</label>
+        <input type="number" class="form-control" asp-for="DecurtamentoPunti" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Importo (€)</label>
+        <input type="number" class="form-control" asp-for="Importo" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Data Violazione</label>
+        <input type="date" class="form-control" asp-for="DataViolazione" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salva</button>
+</form>
+
+<a asp-action="Index">Torna alla lista</a>
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
